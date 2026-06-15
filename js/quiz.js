@@ -7,7 +7,7 @@ const playerId = localStorage.getItem("playerId");
 let qIndex = 0;
 let score = 0;
 let time = 50;
-let answered = false;
+let selected = null;
 let interval;
 
 const qEl = document.getElementById("q");
@@ -15,38 +15,45 @@ const aEl = document.getElementById("answers");
 const timerEl = document.getElementById("timer");
 const resultEl = document.getElementById("result");
 
-function animateChange(cb) {
-  const box = document.querySelector(".container");
-  box.classList.add("fade-out");
-
-  setTimeout(() => {
-    cb();
-    box.classList.remove("fade-out");
-    box.classList.add("fade-in");
-  }, 300);
-}
-
-function startQuestion() {
-  answered = false;
+function renderQuestion() {
+  selected = null;
   time = 50;
-  timerEl.textContent = time;
-  resultEl.innerHTML = "";
 
   const q = QUESTIONS[qIndex];
 
   qEl.textContent = q.q;
   aEl.innerHTML = "";
+  resultEl.innerHTML = "";
 
+  // ответы
   q.a.forEach((text, i) => {
     const btn = document.createElement("button");
     btn.textContent = text;
 
-    btn.onclick = () => select(i, btn);
+    btn.onclick = () => {
+      selected = i;
+
+      document.querySelectorAll("#answers button").forEach(b => {
+        b.classList.remove("selected");
+      });
+
+      btn.classList.add("selected");
+
+      document.getElementById("confirmBtn").disabled = false;
+    };
 
     aEl.appendChild(btn);
   });
 
+  document.getElementById("confirmBtn").disabled = true;
+
+  startTimer();
+}
+
+function startTimer() {
   clearInterval(interval);
+
+  timerEl.textContent = time;
 
   interval = setInterval(() => {
     time--;
@@ -54,42 +61,34 @@ function startQuestion() {
 
     if (time <= 0) {
       clearInterval(interval);
-      showAnswer();
+      autoSubmit();
     }
   }, 1000);
 }
 
-function select(i, btn) {
-  if (answered) return;
-
-  answered = true;
-  const q = QUESTIONS[qIndex];
-
-  q.selected = i;
-
-  document.querySelectorAll("#answers button").forEach(b => {
-    b.classList.add("disabled");
-  });
-
-  btn.classList.add("selected");
-
-  if (i === q.correct) score++;
+function autoSubmit() {
+  submitAnswer();
 }
 
-function showAnswer() {
+function submitAnswer() {
   const q = QUESTIONS[qIndex];
 
-  resultEl.innerHTML = "Правильный ответ: " + q.a[q.correct];
+  if (selected === q.correct) {
+    score++;
+  }
 
-  setTimeout(() => {
-    animateChange(() => {
-      qIndex++;
+  resultEl.innerHTML =
+    "Правильный ответ: " + q.a[q.correct];
 
-      if (qIndex >= QUESTIONS.length) return finish();
+  setTimeout(nextQuestion, 2500);
+}
 
-      startQuestion();
-    });
-  }, 3000);
+function nextQuestion() {
+  qIndex++;
+
+  if (qIndex >= QUESTIONS.length) return finish();
+
+  renderQuestion();
 }
 
 async function finish() {
@@ -101,4 +100,7 @@ async function finish() {
   location.href = "result.html";
 }
 
-startQuestion();
+/* кнопка */
+window.confirmAnswer = submitAnswer;
+
+renderQuestion();
