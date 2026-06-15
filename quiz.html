@@ -1,12 +1,21 @@
-<!-- quiz.html -->
 <div class="container">
-  <h2 id="q"></h2>
 
-  <div id="answers"></div>
+  <div class="card">
 
-  <div id="timer">50</div>
+    <h2 id="q"></h2>
 
-  <div id="result"></div>
+    <div id="timer">50</div>
+
+    <div id="answers"></div>
+
+    <button id="confirmBtn" onclick="confirmAnswer()" disabled>
+      Подтвердить
+    </button>
+
+    <div id="result"></div>
+
+  </div>
+
 </div>
 
 <script type="module" src="js/quiz.js"></script>
