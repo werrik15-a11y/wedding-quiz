@@ -1,11 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Результат</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
 <div class="container">
-  <h1>Ваш результат</h1>
+  <h1>Ваш результат 🎉</h1>
   <h2 id="score"></h2>
 </div>
 
+<!-- конфетти -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 <script>
-  document.getElementById("score").textContent =
-    localStorage.getItem("finalScore") + " / 7";
+  const score = localStorage.getItem("finalScore") || 0;
+
+  document.getElementById("score").textContent = score + " / 7";
+
+  if (score >= 5) {
+    confetti({
+      particleCount: 200,
+      spread: 90,
+      origin: { y: 0.6 }
+    });
+
+    setInterval(() => {
+      confetti({
+        particleCount: 80,
+        spread: 60
+      });
+    }, 2000);
+  }
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</body>
+</html>
