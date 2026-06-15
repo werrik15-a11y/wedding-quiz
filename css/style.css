@@ -149,3 +149,99 @@ tr {
   transform: translateY(0);
   transition: 0.3s ease;
 }
+
+/* =========================
+   🎴 КАРТОЧКА КАК ПРИЛОЖЕНИЕ
+   ========================= */
+
+.card {
+  background: white;
+  border-radius: 24px;
+  padding: 25px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.10);
+  margin-top: 20px;
+}
+
+/* =========================
+   ❓ ВОПРОС
+   ========================= */
+
+#q {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 10px 0 20px 0;
+}
+
+/* =========================
+   ⏱ ТАЙМЕР (как в игре)
+   ========================= */
+
+#timer {
+  font-size: 44px;
+  font-weight: bold;
+  color: #b89455;
+  margin-bottom: 10px;
+}
+
+/* =========================
+   🎯 КНОПКИ ОТВЕТОВ (ВАЖНО)
+   ========================= */
+
+#answers {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+#answers button {
+  padding: 14px;
+  border-radius: 14px;
+  border: 2px solid #e7dcc9;
+  background: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#answers button:hover {
+  transform: scale(1.02);
+  background: #f7f1e7;
+}
+
+/* выбранный ответ */
+#answers button.selected {
+  background: #c8a96a;
+  color: white;
+  border-color: #c8a96a;
+}
+
+/* =========================
+   ✔ КНОПКА ПОДТВЕРДИТЬ
+   ========================= */
+
+#confirmBtn {
+  margin-top: 18px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: #c8a96a;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#confirmBtn:disabled {
+  opacity: 0.4;
+}
+
+/* =========================
+   📢 РЕЗУЛЬТАТ ОТВЕТА
+   ========================= */
+
+#result {
+  margin-top: 15px;
+  font-size: 16px;
+  color: #4a5c4d;
+}
