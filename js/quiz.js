@@ -31,9 +31,9 @@ function animateChange(callback) {
   }, 300);
 }
 
-// =====================
+// =========================
 // РЕНДЕР ВОПРОСА
-// =====================
+// =========================
 function renderQuestion() {
   selected = null;
   time = 50;
@@ -68,9 +68,9 @@ function renderQuestion() {
   startTimer();
 }
 
-// =====================
+// =========================
 // ТАЙМЕР
-// =====================
+// =========================
 function startTimer() {
   clearInterval(interval);
 
@@ -82,14 +82,14 @@ function startTimer() {
 
     if (time <= 0) {
       clearInterval(interval);
-      submitAnswer(); // автоответ
+      submitAnswer();
     }
   }, 1000);
 }
 
-// =====================
-// ОТПРАВКА ОТВЕТА
-// =====================
+// =========================
+// ОТВЕТ
+// =========================
 function submitAnswer() {
   const q = QUESTIONS[qIndex];
 
@@ -100,20 +100,23 @@ function submitAnswer() {
   resultEl.innerHTML =
     "Правильный ответ: " + q.a[q.correct];
 
-  setTimeout(() => {
-    animateChange(() => {
-      qIndex++;
-
-      if (qIndex >= QUESTIONS.length) return finish();
-
-      renderQuestion();
-    });
-  }, 2000);
+  setTimeout(nextQuestion, 2000);
 }
 
-// =====================
+// =========================
+// СЛЕДУЮЩИЙ ВОПРОС
+// =========================
+function nextQuestion() {
+  qIndex++;
+
+  if (qIndex >= QUESTIONS.length) return finish();
+
+  renderQuestion();
+}
+
+// =========================
 // ФИНАЛ
-// =====================
+// =========================
 async function finish() {
   await updateDoc(doc(db, "players", playerId), {
     score
@@ -123,12 +126,8 @@ async function finish() {
   location.href = "result.html";
 }
 
-// =====================
-// КНОПКА
-// =====================
+// кнопка
 window.confirmAnswer = submitAnswer;
 
-// =====================
-// СТАРТ
-// =====================
+// старт
 renderQuestion();
