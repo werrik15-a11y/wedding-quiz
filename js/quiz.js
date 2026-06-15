@@ -10,11 +10,30 @@ let time = 50;
 let selected = null;
 let interval;
 
+// DOM
 const qEl = document.getElementById("q");
 const aEl = document.getElementById("answers");
 const timerEl = document.getElementById("timer");
 const resultEl = document.getElementById("result");
 
+// =====================
+// АНИМАЦИЯ ПЕРЕХОДА
+// =====================
+function animateChange(callback) {
+  const box = document.querySelector(".card");
+
+  box.classList.add("fade-out");
+
+  setTimeout(() => {
+    callback();
+    box.classList.remove("fade-out");
+    box.classList.add("fade-in");
+  }, 300);
+}
+
+// =====================
+// РЕНДЕР ВОПРОСА
+// =====================
 function renderQuestion() {
   selected = null;
   time = 50;
@@ -25,7 +44,8 @@ function renderQuestion() {
   aEl.innerHTML = "";
   resultEl.innerHTML = "";
 
-  // ответы
+  document.getElementById("confirmBtn").disabled = true;
+
   q.a.forEach((text, i) => {
     const btn = document.createElement("button");
     btn.textContent = text;
@@ -45,11 +65,12 @@ function renderQuestion() {
     aEl.appendChild(btn);
   });
 
-  document.getElementById("confirmBtn").disabled = true;
-
   startTimer();
 }
 
+// =====================
+// ТАЙМЕР
+// =====================
 function startTimer() {
   clearInterval(interval);
 
@@ -61,15 +82,14 @@ function startTimer() {
 
     if (time <= 0) {
       clearInterval(interval);
-      autoSubmit();
+      submitAnswer(); // автоответ
     }
   }, 1000);
 }
 
-function autoSubmit() {
-  submitAnswer();
-}
-
+// =====================
+// ОТПРАВКА ОТВЕТА
+// =====================
 function submitAnswer() {
   const q = QUESTIONS[qIndex];
 
@@ -80,17 +100,20 @@ function submitAnswer() {
   resultEl.innerHTML =
     "Правильный ответ: " + q.a[q.correct];
 
-  setTimeout(nextQuestion, 2500);
+  setTimeout(() => {
+    animateChange(() => {
+      qIndex++;
+
+      if (qIndex >= QUESTIONS.length) return finish();
+
+      renderQuestion();
+    });
+  }, 2000);
 }
 
-function nextQuestion() {
-  qIndex++;
-
-  if (qIndex >= QUESTIONS.length) return finish();
-
-  renderQuestion();
-}
-
+// =====================
+// ФИНАЛ
+// =====================
 async function finish() {
   await updateDoc(doc(db, "players", playerId), {
     score
@@ -100,7 +123,12 @@ async function finish() {
   location.href = "result.html";
 }
 
-/* кнопка */
+// =====================
+// КНОПКА
+// =====================
 window.confirmAnswer = submitAnswer;
 
+// =====================
+// СТАРТ
+// =====================
 renderQuestion();
