@@ -103,3 +103,49 @@ tr {
 
 .up { background: #d4f7d4 !important; }
 .down { background: #ffd6d6 !important; }
+
+/* =========================
+   🧱 КАРТОЧКА ВОПРОСА (НОВЫЙ UI)
+   ========================= */
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  margin-top: 20px;
+}
+
+/* кнопка подтвердить */
+#confirmBtn {
+  margin-top: 20px;
+  background: #c8a96a;
+  color: white;
+  border: none;
+  padding: 14px;
+  width: 90%;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#confirmBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* =========================
+   🌊 ПЛАВНЫЕ ПЕРЕХОДЫ
+   ========================= */
+
+.fade-out {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: 0.3s ease;
+}
+
+.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: 0.3s ease;
+}
