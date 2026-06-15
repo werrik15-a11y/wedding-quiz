@@ -96,6 +96,7 @@ function submitAnswer() {
   if (selected === q.correct) {
     score++;
   }
+  syncScore();
 
   resultEl.innerHTML =
     "Правильный ответ: " + q.a[q.correct];
@@ -119,7 +120,8 @@ function nextQuestion() {
 // =========================
 async function finish() {
   await updateDoc(doc(db, "players", playerId), {
-    score
+    score,
+    finished: true
   });
 
   localStorage.setItem("finalScore", score);
