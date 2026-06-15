@@ -1,9 +1,6 @@
 import { QUESTIONS } from "./questions.js";
 import { db } from "./firebase.js";
-import {
-  doc,
-  updateDoc
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const playerId = localStorage.getItem("playerId");
 
@@ -18,9 +15,21 @@ const aEl = document.getElementById("answers");
 const timerEl = document.getElementById("timer");
 const resultEl = document.getElementById("result");
 
+function animateChange(cb) {
+  const box = document.querySelector(".container");
+  box.classList.add("fade-out");
+
+  setTimeout(() => {
+    cb();
+    box.classList.remove("fade-out");
+    box.classList.add("fade-in");
+  }, 300);
+}
+
 function startQuestion() {
   answered = false;
   time = 50;
+  timerEl.textContent = time;
   resultEl.innerHTML = "";
 
   const q = QUESTIONS[qIndex];
@@ -58,37 +67,33 @@ function select(i, btn) {
 
   q.selected = i;
 
-  // блокируем кнопки
   document.querySelectorAll("#answers button").forEach(b => {
     b.classList.add("disabled");
   });
 
   btn.classList.add("selected");
 
-  if (i === q.correct) {
-    score++;
-  }
+  if (i === q.correct) score++;
 }
 
 function showAnswer() {
   const q = QUESTIONS[qIndex];
 
-  resultEl.innerHTML =
-    "Правильный ответ: " + q.a[q.correct];
+  resultEl.innerHTML = "Правильный ответ: " + q.a[q.correct];
 
   setTimeout(() => {
-    qIndex++;
+    animateChange(() => {
+      qIndex++;
 
-    if (qIndex >= QUESTIONS.length) return finish();
+      if (qIndex >= QUESTIONS.length) return finish();
 
-    startQuestion();
+      startQuestion();
+    });
   }, 3000);
 }
 
 async function finish() {
-  const ref = doc(db, "players", playerId);
-
-  await updateDoc(ref, {
+  await updateDoc(doc(db, "players", playerId), {
     score
   });
 
