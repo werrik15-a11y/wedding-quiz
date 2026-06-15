@@ -103,3 +103,15 @@ tr:nth-child(1) {
   background: #fff3d6;
   font-weight: bold;
 }
+
+.fade-out {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: 0.4s ease;
+}
+
+.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: 0.4s ease;
+}
