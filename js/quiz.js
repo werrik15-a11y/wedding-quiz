@@ -1,46 +1,8 @@
-import { QUESTIONS } from "./questions.js";
-import { db } from "./firebase.js";
-import {
-  doc,
-  getDoc,
-  updateDoc
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+let answered = false;
 
-const playerId = localStorage.getItem("playerId");
-
-let qIndex = 0;
-let score = 0;
-let time = 50;
-let interval;
-
-const qEl = document.getElementById("q");
-const aEl = document.getElementById("answers");
-const timerEl = document.getElementById("timer");
-const resultEl = document.getElementById("result");
-
-async function load() {
-  showQuestion();
-}
-
-function showQuestion() {
-  if (qIndex >= QUESTIONS.length) return finish();
-
-  const q = QUESTIONS[qIndex];
-
-  qEl.textContent = q.q;
-  aEl.innerHTML = "";
-  resultEl.innerHTML = "";
+function startTimer() {
   time = 50;
-
-  q.a.forEach((text, i) => {
-    const btn = document.createElement("button");
-    btn.textContent = text;
-
-    btn.onclick = () => select(i);
-    aEl.appendChild(btn);
-  });
-
-  clearInterval(interval);
+  timerEl.textContent = time;
 
   interval = setInterval(() => {
     time--;
@@ -48,39 +10,46 @@ function showQuestion() {
 
     if (time <= 0) {
       clearInterval(interval);
-      showAnswer();
+      lockQuestion();
     }
   }, 1000);
 }
 
-function select(i) {
+function selectAnswer(i) {
+  if (answered) return;
+
+  answered = true;
+
   QUESTIONS[qIndex].selected = i;
-}
 
-function showAnswer() {
-  const q = QUESTIONS[qIndex];
-
-  if (q.selected === q.correct) {
+  // фиксируем ответ сразу в Firebase (не ждём конца)
+  if (i === QUESTIONS[qIndex].correct) {
     score++;
   }
 
-  resultEl.innerHTML =
-    "Правильный ответ: " + q.a[q.correct];
+  showCorrectAnswer();
 
   setTimeout(() => {
-    qIndex++;
-    showQuestion();
-  }, 5000);
+    nextQuestion();
+  }, 3000);
 }
 
-async function finish() {
-  const ref = doc(db, "players", playerId);
-  await updateDoc(ref, {
-    score
-  });
+function lockQuestion() {
+  if (!answered) {
+    answered = true;
+    showCorrectAnswer();
 
-  localStorage.setItem("finalScore", score);
-  location.href = "result.html";
+    setTimeout(() => {
+      nextQuestion();
+    }, 3000);
+  }
 }
 
-load();
+function nextQuestion() {
+  qIndex++;
+  answered = false;
+
+  if (qIndex >= QUESTIONS.length) return finish();
+
+  showQuestion();
+}
