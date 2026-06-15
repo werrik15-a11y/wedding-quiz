@@ -126,6 +126,13 @@ async function finish() {
   location.href = "result.html";
 }
 
+async function syncScore() {
+  await updateDoc(doc(db, "players", playerId), {
+    score: score,
+    current: qIndex
+  });
+}
+
 // кнопка
 window.confirmAnswer = submitAnswer;
 
