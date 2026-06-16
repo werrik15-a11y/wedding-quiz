@@ -314,3 +314,30 @@ table tr:nth-child(odd) {
 table tr {
   transition: all 0.8s ease;
 }
+
+/* ===========================
+   АНИМАЦИЯ ПЕРЕМЕЩЕНИЯ СТРОК
+   =========================== */
+
+#tableBody tr {
+  transition:
+    transform 0.8s ease,
+    background-color 0.3s ease;
+}
+
+/* полосатая таблица */
+
+#tableBody tr:nth-child(odd) {
+  background: rgba(255,255,255,0.95);
+}
+
+#tableBody tr:nth-child(even) {
+  background: rgba(245,239,228,0.95);
+}
+
+/* подсветка движения */
+
+.rank-moved {
+  transform: scale(1.04);
+  box-shadow: 0 0 20px rgba(200,169,106,.45);
+}
