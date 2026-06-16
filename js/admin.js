@@ -14,7 +14,8 @@ const rowMap = new Map();
 
 const q = query(
   collection(db, "players"),
-  orderBy("score", "desc")
+  orderBy("score", "desc"),
+  orderBy("createdAt", "asc")
 );
 
 onSnapshot(q, (snap) => {
