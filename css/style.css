@@ -273,23 +273,55 @@ tr {
 }
 
 .first {
-  width: 240px;
-  transform: scale(1.08);
+  width: 260px;
+  min-height: 220px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff8dc,
+      #f4d03f
+    );
+
+  border: 3px solid #d4af37;
 }
 
-.second,
+.second {
+  width: 210px;
+  min-height: 180px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f8f9f9,
+      #d5d8dc
+    );
+
+  border: 3px solid #aeb6bf;
+}
+
 .third {
-  width: 200px;
+  width: 210px;
+  min-height: 160px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f5cba7,
+      #cd7f32
+    );
+
+  border: 3px solid #a04000;
 }
 
 .place-medal {
-  font-size: 42px;
+  font-size: 58px;
 }
 
 .place-name {
-  margin-top: 10px;
-  font-size: 22px;
-  font-weight: 600;
+  margin-top: 12px;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 .place-score {
