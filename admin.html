@@ -6,28 +6,27 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
+  
 <div class="container">
   <h1>🏆 Рейтинг гостей</h1>
 
   <div id="podium"></div>
 
-  <table id="table"></table>
+  <table id="table">
+    <thead>
+      <tr>
+        <th>Место</th>
+        <th>Имя</th>
+        <th>Баллы</th>
+      </tr>
+    </thead>
+
+    <tbody id="tableBody"></tbody>
+  </table>
 </div>
 
 <!-- 1) Chart.js (СНАЧАЛА!) -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script type="module">
-import autoAnimate from 'https://cdn.jsdelivr.net/npm/@formkit/auto-animate/+esm';
-
-window.enableAutoAnimate = () => {
-  const table = document.getElementById('table');
-  autoAnimate(table, {
-    duration: 800
-  });
-};
-</script>
   
 <!-- 2) ТВОЯ АДМИН ЛОГИКА -->
 <script type="module" src="js/admin.js"></script>
