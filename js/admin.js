@@ -81,12 +81,20 @@ const visibleIds = new Set(
 );
 
 Array.from(tbody.children).forEach(row => {
+
   if (!visibleIds.has(row.dataset.id)) {
+
+    rowMap.delete(row.dataset.id);
+
     row.remove();
   }
+
 });
   
   visiblePlayers.forEach((player, index) => {
+
+    const realPlace =
+  players.findIndex(p => p.id === player.id) + 1;
 
     let row = rowMap.get(player.id);
 
@@ -105,7 +113,7 @@ Array.from(tbody.children).forEach(row => {
       rowMap.set(player.id, row);
     }
 
-    row.children[0].textContent = index + 4;
+    row.children[0].textContent = realPlace;
     row.children[1].textContent = player.name;
     row.children[2].textContent = player.score;
 
