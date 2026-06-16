@@ -64,7 +64,7 @@ function renderPodium(players) {
 
 function renderRanking(players) {
 
-  const visiblePlayers = players.slice(3, 10);
+  const visiblePlayers = players.slice(3, 15);
 
   const oldPositions = new Map();
 
