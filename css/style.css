@@ -246,53 +246,61 @@ tr {
   color: #4a5c4d;
 }
 
-/* ===================
+/* =======================
    ПЬЕДЕСТАЛ
-   =================== */
+   ======================= */
 
 #podium {
   display: flex;
   justify-content: center;
   align-items: flex-end;
   gap: 15px;
-  margin: 30px 0 40px;
+  margin: 25px 0 40px;
 }
 
 .podium-place {
-  width: 140px;
-  color: white;
+  width: 180px;
   border-radius: 16px 16px 0 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  color: white;
   padding: 15px;
   box-sizing: border-box;
-}
-
-.podium-name {
-  font-weight: bold;
-  margin-bottom: 8px;
-  word-break: break-word;
-}
-
-.podium-score {
-  font-size: 14px;
-  opacity: 0.9;
+  text-align: center;
 }
 
 .first {
   height: 220px;
-  background: linear-gradient(180deg,#f4d03f,#d4ac0d);
+  background: linear-gradient(180deg,#f1c40f,#d4ac0d);
 }
 
 .second {
   height: 170px;
-  background: linear-gradient(180deg,#d5d8dc,#99a3a4);
+  background: linear-gradient(180deg,#d7dbdd,#99a3a4);
 }
 
 .third {
   height: 130px;
-  background: linear-gradient(180deg,#d98880,#a04000);
+  background: linear-gradient(180deg,#cd7f32,#a04000);
+}
+
+.place-number {
+  font-size: 34px;
+  font-weight: bold;
+}
+
+.place-name {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.place-score {
+  margin-top: 5px;
+  font-size: 16px;
+}
+
+table {
+  overflow: hidden;
+  border-radius: 16px;
 }
 
 table tr:nth-child(even) {
@@ -303,6 +311,6 @@ table tr:nth-child(odd) {
   background: rgba(245,239,228,0.85);
 }
 
-table tr:hover {
-  background: #efe3cc;
+table tr {
+  transition: all 0.8s ease;
 }
