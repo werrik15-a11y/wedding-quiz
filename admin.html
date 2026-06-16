@@ -18,6 +18,17 @@
 <!-- 1) Chart.js (СНАЧАЛА!) -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<script type="module">
+import autoAnimate from 'https://cdn.jsdelivr.net/npm/@formkit/auto-animate/+esm';
+
+window.enableAutoAnimate = () => {
+  const table = document.getElementById('table');
+  autoAnimate(table, {
+    duration: 800
+  });
+};
+</script>
+  
 <!-- 2) ТВОЯ АДМИН ЛОГИКА -->
 <script type="module" src="js/admin.js"></script>
 
