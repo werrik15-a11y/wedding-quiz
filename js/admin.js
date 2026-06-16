@@ -40,21 +40,24 @@ function renderPodium(players) {
 
   podium.innerHTML = `
     <div class="podium-place second">
-      <div class="place-number">🥈</div>
+      <div class="place-medal">🥈</div>
       <div class="place-name">${second?.name || "-"}</div>
-      <div class="place-score">${second?.score || 0}</div>
+      <div class="place-score">${second?.score || 0} баллов</div>
+      <div class="place-rank">2 место</div>
     </div>
 
     <div class="podium-place first">
-      <div class="place-number">🥇</div>
+      <div class="place-medal">👑</div>
       <div class="place-name">${first?.name || "-"}</div>
-      <div class="place-score">${first?.score || 0}</div>
+      <div class="place-score">${first?.score || 0} баллов</div>
+      <div class="place-rank">Победитель</div>
     </div>
 
     <div class="podium-place third">
-      <div class="place-number">🥉</div>
+      <div class="place-medal">🥉</div>
       <div class="place-name">${third?.name || "-"}</div>
-      <div class="place-score">${third?.score || 0}</div>
+      <div class="place-score">${third?.score || 0} баллов</div>
+      <div class="place-rank">3 место</div>
     </div>
   `;
 }
