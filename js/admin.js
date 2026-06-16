@@ -72,6 +72,16 @@ function renderRanking(players) {
     );
   });
 
+const visibleIds = new Set(
+  visiblePlayers.map(p => p.id)
+);
+
+Array.from(tbody.children).forEach(row => {
+  if (!visibleIds.has(row.dataset.id)) {
+    row.remove();
+  }
+});
+  
   visiblePlayers.forEach((player, index) => {
 
     let row = rowMap.get(player.id);
