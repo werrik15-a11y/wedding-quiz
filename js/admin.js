@@ -1,4 +1,5 @@
 import { db } from "./firebase.js";
+
 import {
   collection,
   query,
@@ -6,7 +7,10 @@ import {
   onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-window.enableAutoAnimate();
+const podium = document.getElementById("podium");
+const tbody = document.getElementById("tableBody");
+
+const rowMap = new Map();
 
 const q = query(
   collection(db, "players"),
@@ -18,16 +22,17 @@ onSnapshot(q, (snap) => {
   const players = [];
 
   snap.forEach(doc => {
-    players.push(doc.data());
+    players.push({
+      id: doc.id,
+      ...doc.data()
+    });
   });
 
   renderPodium(players);
-  renderTable(players);
+  renderRanking(players);
 });
 
 function renderPodium(players) {
-
-  const podium = document.getElementById("podium");
 
   const first = players[0];
   const second = players[1];
@@ -37,45 +42,96 @@ function renderPodium(players) {
     <div class="podium-place second">
       <div class="place-number">🥈</div>
       <div class="place-name">${second?.name || "-"}</div>
-      <div class="place-score">${second?.score || 0} баллов</div>
+      <div class="place-score">${second?.score || 0}</div>
     </div>
 
     <div class="podium-place first">
       <div class="place-number">🥇</div>
       <div class="place-name">${first?.name || "-"}</div>
-      <div class="place-score">${first?.score || 0} баллов</div>
+      <div class="place-score">${first?.score || 0}</div>
     </div>
 
     <div class="podium-place third">
       <div class="place-number">🥉</div>
       <div class="place-name">${third?.name || "-"}</div>
-      <div class="place-score">${third?.score || 0} баллов</div>
+      <div class="place-score">${third?.score || 0}</div>
     </div>
   `;
 }
 
-function renderTable(players) {
+function renderRanking(players) {
 
-  const table = document.getElementById("table");
+  const visiblePlayers = players.slice(3, 10);
 
-  let html = `
-    <tr>
-      <th>Место</th>
-      <th>Имя</th>
-      <th>Баллы</th>
-    </tr>
-  `;
+  const oldPositions = new Map();
 
-  players.slice(3, 10).forEach((p, index) => {
-
-    html += `
-      <tr>
-        <td>${index + 4}</td>
-        <td>${p.name}</td>
-        <td>${p.score}</td>
-      </tr>
-    `;
+  Array.from(tbody.children).forEach(row => {
+    oldPositions.set(
+      row.dataset.id,
+      row.getBoundingClientRect().top
+    );
   });
 
-  table.innerHTML = html;
+  visiblePlayers.forEach((player, index) => {
+
+    let row = rowMap.get(player.id);
+
+    if (!row) {
+
+      row = document.createElement("tr");
+
+      row.dataset.id = player.id;
+
+      row.innerHTML = `
+        <td></td>
+        <td></td>
+        <td></td>
+      `;
+
+      rowMap.set(player.id, row);
+    }
+
+    row.children[0].textContent = index + 4;
+    row.children[1].textContent = player.name;
+    row.children[2].textContent = player.score;
+
+    tbody.appendChild(row);
+  });
+
+  requestAnimationFrame(() => {
+
+    Array.from(tbody.children).forEach(row => {
+
+      const oldTop = oldPositions.get(row.dataset.id);
+
+      if (!oldTop) return;
+
+      const newTop =
+        row.getBoundingClientRect().top;
+
+      const delta = oldTop - newTop;
+
+      if (Math.abs(delta) > 1) {
+
+        row.style.transition = "none";
+
+        row.style.transform =
+          `translateY(${delta}px)`;
+
+        row.offsetHeight;
+
+        row.style.transition =
+          "transform .8s ease";
+
+        row.style.transform =
+          "translateY(0px)";
+
+        row.classList.add("rank-moved");
+
+        setTimeout(() => {
+          row.classList.remove("rank-moved");
+        }, 800);
+      }
+    });
+  });
 }
